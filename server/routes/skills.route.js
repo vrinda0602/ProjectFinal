@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const skillsController = require('../controllers/skills.controller');
- 
+
 // Get all skills
 router.get('/skills', skillsController.getAllSkills);
- 
+
 // Get a single skill by ID
 router.get('/skills/:id', skillsController.getSkillById, (req, res) => {
     res.json(res.skill);
@@ -23,11 +23,11 @@ router.get('/dev/latest', skillsController.getLatestDev);
 
 // Create a new skill
 router.post('/skills', skillsController.createSkill);
- 
+
 // Update a skill
 router.patch('/skills/:id', skillsController.getSkillById, skillsController.updateSkill);
- 
+
 // Delete a skill
 router.delete('/skills/:id', skillsController.getSkillById, skillsController.deleteSkill);
- 
+
 module.exports = router;

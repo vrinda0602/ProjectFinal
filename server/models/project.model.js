@@ -1,18 +1,18 @@
-const mongoose=require('mongoose');
-const {customAlphabet}= require('nanoid');
+const mongoose = require('mongoose');
+const { customAlphabet } = require('nanoid');
 // (async () => {
 //     const { customAlphabet } = await import('nanoid');
 //     // Your code using customAlphabet
 //   })();
-const numberId= customAlphabet('0123456789',8);
+const numberId = customAlphabet('0123456789', 8);
 
 const projectSchema = new mongoose.Schema({
-    _id:{ type:String, default: ()=>`PRO-${numberId()}`},
-    orgId:{
-                type: String,
-                ref: "Organisation",
-                required: true
-            },
+    _id: { type: String, default: () => `P-${numberId()}` },
+    orgId: {
+        type: String,
+        ref: "Organisation",
+        required: true
+    },
     orgName: {
         type: String,
         required: true
@@ -29,16 +29,16 @@ const projectSchema = new mongoose.Schema({
         type: [String], // Array of skills
         required: true
     },
-    budget: { 
+    budget: {
         type: String,
-        required: true 
+        required: true
     },
-    location: { 
+    location: {
         type: String,
-        required: true 
+        required: true
     }
 }, { timestamps: true });
- 
+
 const Project = mongoose.model('Project', projectSchema);
- 
+
 module.exports = Project;

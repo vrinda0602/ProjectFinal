@@ -1,6 +1,6 @@
 const Developer = require('../models/developer.model');
-const fs=require('fs');
-const path=require('path');
+const fs = require('fs');
+const path = require('path');
 
 const registerDeveloper = async (req, res) => {
     try {
@@ -13,7 +13,6 @@ const registerDeveloper = async (req, res) => {
             skills,
             yearsOfExperience,
             dev_location,
-            // projects,
             resume
         } = req.body;
 
@@ -28,24 +27,6 @@ const registerDeveloper = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        // let parsedSkills;
-        // try {
-        //     parsedSkills = JSON.parse(skills);
-        // } catch (error) {
-        //     return res.status(400).json({ message: 'Invalid JSON format for skills', error: error.message });
-        // }
-       
-        // Split the skills string into an array, trim spaces, and filter out empty strings
-       
-
-
-
-        // try {
-        //     parsedProjects = projects ? JSON.parse(projects) : [];
-        // } catch (error) {
-        //     return res.status(400).json({ message: 'Invalid JSON format for projects', error: error.message });
-        // }
-
         const newDeveloper = new Developer({
             DEVId,
             firstName,
@@ -53,12 +34,9 @@ const registerDeveloper = async (req, res) => {
             email,
             availability,
             skills,
-            // skills:skillsArray,
             yearsOfExperience,
             dev_location,
             resume: resumePath,
-            // projects: parsedProjects
-            
         });
 
         await newDeveloper.save();
@@ -90,44 +68,6 @@ const getDeveloperById = async (req, res) => {
     }
 };
 
-
-
-//  // Update a developer by ID
-// const updateDeveloper = async (req, res) => {
-//     try {
-//       const developer = await Developer.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-//       if (!developer) {
-//         return res.status(404).json({ error: 'Developer not found' });
-//       }
-//       res.status(200).json(developer);
-//     } catch (error) {
-//       res.status(400).json({ error: error.message });
-//     }
-//   };
-
-
- // Update a developer by ID
-// const updateDeveloper = async (req, res) => {
-//     try {
-//         // Parse skills and projects if they are passed as strings
-//         if (typeof req.body.skills === 'string') {
-//             req.body.skills = req.body.skills.split(',').map(skill=>skill.trim());
-//         }
-//         // if (typeof req.body.projects === 'string') {
-//         //     req.body.projects = JSON.parse(req.body.projects);
-//         // }
- 
-//         const developer = await Developer.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-//         if (!developer) {
-//             return res.status(404).json({ error: 'Developer not found' });
-//         }
-//         res.status(200).json(developer);
-//     } catch (error) {
-//         res.status(400).json({ error: error.message });
-//     }
-// };
-
-
 const updateDeveloper = async (req, res) => {
     try {
         // Parse skills if they are passed as a string
@@ -145,20 +85,18 @@ const updateDeveloper = async (req, res) => {
     }
 };
 
-
- 
-  // Delete a developer by ID
-  const deleteDeveloper = async (req, res) => {
+// Delete a developer by ID
+const deleteDeveloper = async (req, res) => {
     try {
-      const developer = await Developer.findByIdAndDelete(req.params.id);
-      if (!developer) {
-        return res.status(404).json({ error: 'Developer not found' });
-      }
-      res.status(200).json({ message: 'Developer deleted successfully' });
+        const developer = await Developer.findByIdAndDelete(req.params.id);
+        if (!developer) {
+            return res.status(404).json({ error: 'Developer not found' });
+        }
+        res.status(200).json({ message: 'Developer deleted successfully' });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
-  };
+};
 
 module.exports = {
     registerDeveloper,

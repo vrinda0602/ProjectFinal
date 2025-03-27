@@ -1,24 +1,26 @@
 const ApplyAsDeveloper = require('../models/applyAsDeveloper.model');
+const Developer = require('../models/developer.model');
+const Project = require('../models/project.model');
 
 // Create a new application
 const applyAsDeveloper = async (req, res) => {
     try {
-        const { developerId, projectIds} = req.body;
+        const { developerId, projectIds } = req.body;
 
         if (!projectIds || !developerId || projectIds.length === 0) {
             return res.status(400).json({ error: 'Project IDs and Developer ID are required' });
         }
-        
-        //check validation code
-        // const devExists= await Developer.findOne({_id:developerId.toString()});
-        // if(!devExists){
-        //     return res.status(400).json({message:"Invalid Dev Id. Developer not found"});
-        // }
 
-        // const validProjs = await Project.find({_id:{$in:projectIds}});
-        // if(validProjs.length !== projectIds.length){
-        //     return res.status(404).json({message: "some project ids are invalid"});
-        // }
+        //Validation code
+        const devExists = await Developer.findOne({ _id: developerId.toString() });
+        if (!devExists) {
+            return res.status(400).json({ message: "Invalid Dev Id. Developer not found" });
+        }
+
+        const validProjs = await Project.find({ _id: { $in: projectIds } });
+        if (validProjs.length !== projectIds.length) {
+            return res.status(404).json({ message: "some project ids are invalid" });
+        }
 
         const application = new ApplyAsDeveloper({ projectIds, developerId });
         await application.save();
@@ -32,10 +34,13 @@ const applyAsDeveloper = async (req, res) => {
 // Get all applications
 const getAllApplications = async (req, res) => {
     try {
-        const applications = await ApplyAsDeveloper.find()
-            .populate('projectIds', 'name') // Populating project names
-            .populate('developerId', 'name'); // Populating developer name
+        const applications = await ApplyAsDeveloper.find();
         res.status(200).json(applications);
+        // console.log(applications);
+        // const applications = await ApplyAsDeveloper.find()
+        //     .populate('projectIds', 'projectName') // Populating project names
+        //     .populate('developerId', 'firstName'); // Populating developer name
+        //res.status(200).json(applications);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -62,28 +67,28 @@ const editApplication = async (req, res) => {
     try {
         const { id } = req.params;
         const { developerId, projectIds } = req.body;
- 
+
         if (!projectIds || !developerId || projectIds.length === 0) {
             return res.status(400).json({ error: 'Project IDs and Developer ID are required' });
         }
- 
-        // Check validation code
-        // const devExists = await Developer.findOne({ _id: developerId.toString() });
-        // if (!devExists) {
-        //     return res.status(400).json({ message: "Invalid Dev Id. Developer not found" });
-        // }
- 
-        // const validProjs = await Project.find({ _id: { $in: projectIds } });
-        // if (validProjs.length !== projectIds.length) {
-        //     return res.status(404).json({ message: "Some project IDs are invalid" });
-        // }
- 
+
+        //Validation code
+        const devExists = await Developer.findOne({ _id: developerId.toString() });
+        if (!devExists) {
+            return res.status(400).json({ message: "Invalid Dev Id. Developer not found" });
+        }
+
+        const validProjs = await Project.find({ _id: { $in: projectIds } });
+        if (validProjs.length !== projectIds.length) {
+            return res.status(404).json({ message: "Some project IDs are invalid" });
+        }
+
         const application = await ApplyAsDeveloper.findByIdAndUpdate(id, { developerId, projectIds }, { new: true });
- 
+
         if (!application) {
             return res.status(404).json({ error: 'Application not found' });
         }
- 
+
         res.status(200).json(application);
     } catch (error) {
         res.status(500).json({ error: error.message });

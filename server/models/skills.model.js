@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
- 
- const skillSchema = new mongoose.Schema({
+
+const skillSchema = new mongoose.Schema({
     dev_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -25,5 +25,5 @@ const mongoose = require('mongoose');
 });
 
 const Skill = mongoose.model('Skill', skillSchema);
- 
+
 module.exports = Skill;

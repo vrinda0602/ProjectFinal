@@ -32,23 +32,6 @@ app.use('/browse', skillRoutes); // Add the all browse routes
 app.use('/organisation', applyAsDeveloperRoutes);
 app.use('/apply', applyAsOrganisationRoutes);
 
-// app.get('/download-resume/:filename', (req, res) => {
-//     const filePath = path.join(__dirname, 'uploads', req.params.filename);
-   
-//     // Check if the file exists
-//     if (!fs.existsSync(filePath)) {
-//       return res.status(404).send('File not found');
-//     }
-   
-//     // Set the headers
-//     res.setHeader('Content-Type', 'application/pdf');
-//     res.setHeader('Content-Disposition', `attachment; filename="${req.params.filename}"`);
-   
-//     // Stream the file to the response
-//     const fileStream = fs.createReadStream(filePath);
-//     fileStream.pipe(res);
-//   });
-
 // MongoDB Connection
 const dbURI = 'mongodb://localhost:27017/developerData'; // Replace with your MongoDB URI
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
